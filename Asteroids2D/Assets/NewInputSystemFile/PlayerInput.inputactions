@@ -1,0 +1,34 @@
+{
+    "name": "PlayerInput",
+    "maps": [
+        {
+            "name": "Barel",
+            "id": "a217623d-1391-4208-b1c6-4b11cd2ccef6",
+            "actions": [
+                {
+                    "name": "Move",
+                    "type": "Value",
+                    "id": "d936bfbc-d8c6-4b5a-941d-6305e7ea7a38",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "533d9eee-96d7-4d7d-9024-649975122265",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
