@@ -1,8 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
+
+using Asteroids2D.Engine.GameInput;
 using Asteroids2D.Utils;
+using Cinemachine;
 using JoostenProductions;
 using UnityEngine;
+
 
 namespace Asteroids2D.Engine.Player
 {
@@ -10,20 +12,43 @@ namespace Asteroids2D.Engine.Player
     {
         private PlayerView _playerView;
         private PlayerModel _playerModel;
+        private Player _player;
+        private InputReader _inputReader;
 
-        private IMove _moveTransform;
-        private IRotation _rotationTransform;
+        private Vector2 _direction;
 
-        public PlayerController(PlayerModel playerModel)
+        public PlayerController(PlayerModel playerModel,InputReader inputReader)
         {
             _playerView = LoadView();
             _playerModel = playerModel;
+            _inputReader = inputReader;
 
-            _moveTransform = new AccelerationMove(_playerView.transform,_playerModel.Speed,_playerModel.Acceleration);
-            _rotationTransform = new RotationPlayer(_playerView.transform);
+            CinemachineVirtualCamera camera = Object.FindObjectOfType<CinemachineVirtualCamera>();
+            camera.Follow = _playerView.transform;
+            camera.LookAt = _playerView.transform;
+
+            IMove Rigidbody2DMove = new AccelerationRigidbodyMove(_playerView.Rigidbody2D,_playerModel.Speed,_playerModel.Acceleration);
+            IRotation RotationTransform = new RotationPlayer(_playerView.transform,_playerModel.RotationSpeed);
+            IFire FireShip = new FireShip(_playerModel.BulletPrefab,_playerView.FireTransform,_playerModel.BulletForce,_playerView.transform);
+            ITakeDamage TakeDamageShip = new TakeDamageShip(_playerModel.Health,_playerModel.Damage);
+
+            _player = new Player(Rigidbody2DMove, RotationTransform,FireShip,TakeDamageShip);
+
+            _inputReader.MoveEvent += HandleMove;
+            _inputReader.AccelerateEvent += HandleAcceleration;
+            _inputReader.AccelerateCanceledEvent += HandleCancelledAcceleration;
+            _inputReader.FireEvent += HandleFire;
+
+            _playerView.OnTakeDamage += TakeDamage; 
 
             UpdateManager.SubscribeToUpdate(Update);
+            UpdateManager.SubscribeToFixedUpdate(FixedUpdate);
             
+        }
+
+        private void TakeDamage()
+        {
+            _player.TakeDamage();
         }
 
         private PlayerView LoadView()
@@ -36,38 +61,54 @@ namespace Asteroids2D.Engine.Player
 
         private void Update()
         {
-            PlayerMove();
+            PlayerRotation();
         }
 
-        private void PlayerMove()
+        private void FixedUpdate()
         {
-            _moveTransform.Move(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), Time.deltaTime);
-
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-            {
-                if (_moveTransform is AccelerationMove accelerationMove)
-                {
-                    accelerationMove.AddAcceleration();
-                }
-            }
-
-            if (Input.GetKeyUp(KeyCode.LeftShift))
-            {
-                if (_moveTransform is AccelerationMove accelerationMove)
-                {
-                    accelerationMove.RemoveAcceleration();
-                }
-            }
+            Rigidbody2DMovePlayer();
         }
+
 
         private void PlayerRotation()
         {
+            _player.Rotation(_direction);
+        }
 
+        private void Rigidbody2DMovePlayer()
+        {
+            _player.Move(_direction);
+        }
+
+        private void HandleFire()
+        {
+            _player.Fire();
+        }
+
+        private void HandleMove(Vector2 direction)
+        {
+            _direction = direction;
+        }
+
+        private void HandleAcceleration()
+        {
+            _player.AddAcceleration();
+        }
+
+        private void HandleCancelledAcceleration()
+        {
+            _player.RemoveAcceleration();
         }
 
         protected override void OnDispose()
         {
             UpdateManager.UnsubscribeFromUpdate(Update);
+            UpdateManager.UnsubscribeFromFixedUpdate(FixedUpdate);
+
+            _inputReader.MoveEvent -= HandleMove;
+            _inputReader.AccelerateEvent -= HandleAcceleration;
+            _inputReader.AccelerateCanceledEvent -= HandleCancelledAcceleration;
+            _inputReader.FireEvent -= HandleFire;
         }
     }
 }

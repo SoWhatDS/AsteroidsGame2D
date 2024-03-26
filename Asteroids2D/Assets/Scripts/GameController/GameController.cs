@@ -15,18 +15,19 @@ namespace Asteroids2D.Engine
         {
             _profileGame = profileGame;
             _settingsContainer = settingsContainer;
-
+            
             CreateAllControllers();
         }
 
         private void CreateAllControllers()
         {
-            _playerController = new PlayerController(_settingsContainer.PlayerModel);
+            _playerController = new PlayerController(_settingsContainer.PlayerModel,_settingsContainer.InputReader);
+            AddController(_playerController);
         }
 
         protected override void OnDispose()
         {
-            
+            _playerController?.Dispose();
         }
     }
 }
