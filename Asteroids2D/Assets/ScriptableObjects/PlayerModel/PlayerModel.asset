@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aac36100ad4484b85857bf0e1614be02, type: 3}
   m_Name: PlayerModel
   m_EditorClassIdentifier: 
-  <Speed>k__BackingField: 100
-  <Acceleration>k__BackingField: 150
+  <Speed>k__BackingField: 200
+  <Acceleration>k__BackingField: 300
   <Health>k__BackingField: 100
   <Damage>k__BackingField: 10
   <RotationSpeed>k__BackingField: 300

@@ -1,5 +1,6 @@
 
 using Asteroids2D.Engine.GameInput;
+using Asteroids2D.Engine.ObjectPool;
 using Asteroids2D.Utils;
 using Cinemachine;
 using JoostenProductions;
@@ -14,6 +15,7 @@ namespace Asteroids2D.Engine.Player
         private PlayerModel _playerModel;
         private Player _player;
         private InputReader _inputReader;
+        private IViewServices _viewServices;
 
         private Vector2 _direction;
 
@@ -22,6 +24,7 @@ namespace Asteroids2D.Engine.Player
             _playerView = LoadView();
             _playerModel = playerModel;
             _inputReader = inputReader;
+            _viewServices = new ViewServices();
 
             CinemachineVirtualCamera camera = Object.FindObjectOfType<CinemachineVirtualCamera>();
             camera.Follow = _playerView.transform;
@@ -29,7 +32,7 @@ namespace Asteroids2D.Engine.Player
 
             IMove Rigidbody2DMove = new AccelerationRigidbodyMove(_playerView.Rigidbody2D,_playerModel.Speed,_playerModel.Acceleration);
             IRotation RotationTransform = new RotationPlayer(_playerView.transform,_playerModel.RotationSpeed);
-            IFire FireShip = new FireShip(_playerModel.BulletPrefab,_playerView.FireTransform,_playerModel.BulletForce,_playerView.transform);
+            IFire FireShip = new FireShip(_playerModel.BulletPrefab,_playerView.FireTransform,_playerModel.BulletForce,_playerView.transform,_viewServices);
             ITakeDamage TakeDamageShip = new TakeDamageShip(_playerModel.Health,_playerModel.Damage);
 
             _player = new Player(Rigidbody2DMove, RotationTransform,FireShip,TakeDamageShip);

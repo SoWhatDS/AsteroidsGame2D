@@ -1,4 +1,5 @@
 
+using Asteroids2D.Engine.Enemy;
 using Asteroids2D.Engine.GameInput;
 using Asteroids2D.Engine.Player;
 using UnityEngine;
@@ -10,5 +11,7 @@ namespace Asteroids2D.Config
     {
         [field: SerializeField] public InputReader InputReader { get; private set; }
         [field: SerializeField] public PlayerModel PlayerModel { get; private set; }
+        [field: SerializeField] public EnemyModel EnemyModel { get; private set; }
+        [field: SerializeField] public MiddleEnemyModel MiddleEnemyModel { get; private set; }
     }
 }

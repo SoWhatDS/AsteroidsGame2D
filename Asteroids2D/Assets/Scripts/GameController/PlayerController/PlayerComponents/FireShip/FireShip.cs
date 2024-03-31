@@ -1,4 +1,5 @@
 
+using Asteroids2D.Engine.ObjectPool;
 using UnityEngine;
 
 namespace Asteroids2D.Engine.Player
@@ -10,18 +11,22 @@ namespace Asteroids2D.Engine.Player
         private Transform _playerTransform;
         private float _bulletForce;
 
-        public FireShip(Rigidbody2D bulletPrefab,Transform fireTransform,float bulletForce,Transform playerTransform)
+        private IViewServices _viewServices;
+
+        public FireShip(Rigidbody2D bulletPrefab,Transform fireTransform,float bulletForce,Transform playerTransform,IViewServices viewServices)
         {
             _bulletPrefab = bulletPrefab;
             _fireTransform = fireTransform;
             _playerTransform = playerTransform;
             _bulletForce = bulletForce;
+            _viewServices = viewServices;
         }
 
         public void Fire()
         {
-            Rigidbody2D bullet = Object.Instantiate(_bulletPrefab, _fireTransform.position, _playerTransform.rotation);
+            Rigidbody2D bullet = _viewServices.Instantiate<Rigidbody2D>(_bulletPrefab.gameObject,_fireTransform);
             bullet.AddForce(_fireTransform.up * _bulletForce);
+            //_viewServices.Destroy(bullet.gameObject);
         }
     }
 }
