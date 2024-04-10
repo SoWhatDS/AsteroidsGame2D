@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3c5daf46b37f447baac37fbfe7a03c4, type: 3}
+  m_Name: MiddleEnemy
+  m_EditorClassIdentifier: 
+  <Speed>k__BackingField: 15
+  <RotateSpeed>k__BackingField: 30
+  <Damage>k__BackingField: 20
+  <Health>k__BackingField: 75
+  <BulletPrefab>k__BackingField: {fileID: 2959151859429185976, guid: b53608dacfc8046ad95499384648f4a1, type: 3}
+  <BulletForce>k__BackingField: 200

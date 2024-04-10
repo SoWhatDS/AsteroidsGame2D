@@ -12,15 +12,17 @@ namespace Asteroids2D.Engine.Enemy
         private EnemyModel _enemyModel;
         private Enemy _enemy;
         private Transform[] _wayPoints;
+        private Vector2 _startPosition;
 
         private IViewServices _viewServices;
 
-        public EnemyController(EnemyModel enemyModel)
+        public EnemyController(EnemyModel enemyModel,Vector2 startPosition)
         {
             _enemyView = LoadView();
             _enemyModel = enemyModel;
 
             _viewServices = new ViewServices();
+            _startPosition = startPosition;
 
             IEnemyMove EnemyMove = new EnemyMoveTransform(_enemyView.transform,_enemyModel.Speed,_wayPoints);
             IRotateEnemy EnemyRotate = new EnemyRotation(_enemyModel.RotateSpeed,_wayPoints,_enemyView.transform);
@@ -36,7 +38,7 @@ namespace Asteroids2D.Engine.Enemy
             GameObject prefab = ResourceLoader.LoadPrefab(GameConstantsView.ENEMY_VIEW);
             GameObject prefabWayPoints = ResourceLoader.LoadPrefab(GameConstantsView.ENEMYWAYPOINTS);
             GameObject objectView = Object.Instantiate(prefab);
-            GameObject wayPointsObject = Object.Instantiate(prefabWayPoints);
+            GameObject wayPointsObject = Object.Instantiate(prefabWayPoints,_startPosition,Quaternion.identity);
             _wayPoints = wayPointsObject.GetComponentsInChildren<Transform>();
             AddGameObject(objectView);
             AddGameObject(wayPointsObject);

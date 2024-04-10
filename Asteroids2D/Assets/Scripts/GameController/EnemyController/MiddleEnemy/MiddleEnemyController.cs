@@ -13,16 +13,19 @@ namespace Asteroids2D.Engine.Enemy
         private MiddleEnemyModel _middleEnemyModel;
         private MiddleEnemy _middleEnemy;
 
+        private Vector2 _startPosition;
+
 
 
         private Transform[] _wayPoints;
 
-        public MiddleEnemyController(MiddleEnemyModel middleEnemyModel)
+        public MiddleEnemyController(MiddleEnemyModel middleEnemyModel,Vector2 startPosition)
         {
             _middleEnemyView = LoadView();
             _middleEnemyModel = middleEnemyModel;
 
             IViewServices viewServices = new ViewServices();
+            _startPosition = startPosition;
             
             IEnemyMove enemyMove = new EnemyMoveTransform(_middleEnemyView.transform,_middleEnemyModel.Speed,_wayPoints);
             IRotateEnemy rotateEnemy = new EnemyRotation(_middleEnemyModel.RotateSpeed,_wayPoints,_middleEnemyView.transform);
@@ -61,7 +64,7 @@ namespace Asteroids2D.Engine.Enemy
         private MiddleEnemyView LoadView()
         {
             GameObject prefab = ResourceLoader.LoadPrefab(GameConstantsView.MIDDLEENEMY_VIEW);
-            GameObject objectView = Object.Instantiate(prefab,new Vector3(0,10,0),Quaternion.identity);
+            GameObject objectView = Object.Instantiate(prefab,_startPosition,Quaternion.identity);
             GameObject wayPoints = ResourceLoader.LoadPrefab(GameConstantsView.ENEMYWAYPOINTS);
             GameObject wayPointsView = Object.Instantiate(wayPoints, objectView.transform);
             _wayPoints = wayPoints.GetComponentsInChildren<Transform>();

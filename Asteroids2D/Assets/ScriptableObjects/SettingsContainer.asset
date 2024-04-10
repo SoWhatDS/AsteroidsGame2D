@@ -15,3 +15,5 @@ MonoBehaviour:
   <InputReader>k__BackingField: {fileID: 11400000, guid: d959a8a56cb344ae0a67beef59f32ae6, type: 2}
   <PlayerModel>k__BackingField: {fileID: 11400000, guid: 3cc4eedb89e3c42c6a1bff6c10cbeff7, type: 2}
   <EnemyModel>k__BackingField: {fileID: 11400000, guid: 49d04f8a469434debb1f5e2fd4943fef, type: 2}
+  <MiddleEnemyModel>k__BackingField: {fileID: 11400000, guid: 98a7b73120bda47238696216389bfb80, type: 2}
+  <EnemySpawnerModel>k__BackingField: {fileID: 11400000, guid: 23b21e3ec6dfe434c946a5b77a91372f, type: 2}
